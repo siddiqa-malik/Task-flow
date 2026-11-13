@@ -11,6 +11,9 @@ import {
     getCurrentUser,
     requestPasswordReset,
     resetPasswordWithToken,
+    checkEmailExists,
+    googleAuthUser,
+    githubAuthUser,
 } from "./auth.service.js";
 
 import { AuthenticatedRequest } from "../../types/auth.types.js";
@@ -162,6 +165,104 @@ export const resetPassword = async (
                 error instanceof Error
                     ? error.message
                     : "Failed to reset password",
+        });
+    }
+};
+
+export const checkEmail = async (
+    req: Request,
+    res: Response
+): Promise<void> => {
+    try {
+        const email = req.body?.email;
+        if (!email) {
+            res.status(400).json({ success: false, message: "Email is required" });
+            return;
+        }
+        const exists = await checkEmailExists(email);
+        res.status(200).json({ success: true, exists });
+    } catch (error) {
+        res.status(400).json({
+            success: false,
+            message: error instanceof Error ? error.message : "Failed to check email",
+        });
+    }
+};
+
+export const googleAuth = async (
+    req: Request,
+    res: Response
+): Promise<void> => {
+    try {
+        const { name, email, avatar, isSignUp } = req.body;
+        if (!email) {
+            res.status(400).json({ success: false, message: "Email is required" });
+            return;
+        }
+
+        const { existingUser, token, isNewUser } = await googleAuthUser({
+            name: name || email.split("@")[0],
+            email,
+            avatar,
+            isSignUp: !!isSignUp,
+        });
+
+        res.status(200).json({
+            success: true,
+            message: isNewUser ? "User registered successfully with Google" : "Login successful with Google",
+            data: {
+                token,
+                user: {
+                    id: existingUser._id,
+                    name: existingUser.name,
+                    email: existingUser.email,
+                    role: existingUser.role,
+                    avatar: existingUser.avatar,
+                },
+                isNewUser,
+            },
+        });
+    } catch (error: any) {
+        res.status(error.statusCode || 400).json({
+            success: false,
+            notRegistered: !!error.notRegistered,
+            message: error instanceof Error ? error.message : "Google authentication failed",
+        });
+    }
+};
+
+export const githubAuth = async (
+    req: Request,
+    res: Response
+): Promise<void> => {
+    try {
+        const { code, expectedEmail } = req.body;
+        if (!code) {
+            res.status(400).json({
+                success: false,
+                message: "GitHub authorization code is required",
+            });
+            return;
+        }
+
+        const authHeader = req.headers.authorization;
+        const result = await githubAuthUser(code, expectedEmail, authHeader);
+
+        res.status(200).json({
+            success: true,
+            message: "GitHub authentication successful",
+            data: result,
+        });
+    } catch (error: any) {
+        res.status(400).json({
+            success: false,
+            noAccountForEmail: error?.noAccountForEmail || false,
+            expectedEmail: error?.expectedEmail,
+            connectedGithubLogin: error?.connectedGithubLogin,
+            message:
+                error instanceof Error
+                    ? error.message
+                    : "GitHub authentication failed",
         });
     }
 };

@@ -1,17 +1,21 @@
 import mongoose, { Schema, Document } from "mongoose";
 
 export interface IComment extends Document {
-  taskId: mongoose.Types.ObjectId;
+  taskId?: mongoose.Types.ObjectId;
+  issueId?: mongoose.Types.ObjectId;
   userId: mongoose.Types.ObjectId;
   content: string;
 }
 
 const commentSchema = new Schema<IComment>(
   {
+    issueId: {
+      type: Schema.Types.ObjectId,
+      ref: "Issue",
+    },
+
     taskId: {
       type: Schema.Types.ObjectId,
-      ref: "Task",
-      required: true,
     },
 
     userId: {
@@ -32,6 +36,7 @@ const commentSchema = new Schema<IComment>(
 );
 
 commentSchema.index({ taskId: 1 });
+commentSchema.index({ issueId: 1 });
 
 export const Comment = mongoose.model<IComment>(
   "Comment",

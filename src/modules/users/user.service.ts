@@ -4,6 +4,9 @@ import { User } from "./user.model.js";
 
 interface UpdateProfileInput {
   name?: string;
+  email?: string;
+  title?: string | null;
+  username?: string | null;
   avatar?: string | null;
 }
 
@@ -41,6 +44,19 @@ export const updateProfile = async (
   const updatePayload: any = {};
   if (data.name !== undefined) updatePayload.name = data.name.trim();
   if (data.avatar !== undefined) updatePayload.avatar = data.avatar;
+  if (data.title !== undefined) updatePayload.title = data.title ? data.title.trim() : "";
+  if (data.username !== undefined) updatePayload.username = data.username ? data.username.trim() : "";
+  if (data.email !== undefined && data.email.trim()) {
+    const cleanEmail = data.email.toLowerCase().trim();
+    const existingWithEmail = await User.findOne({
+      email: cleanEmail,
+      _id: { $ne: new mongoose.Types.ObjectId(cleanUserId) },
+    });
+    if (existingWithEmail) {
+      throw new Error("This email is already in use by another account");
+    }
+    updatePayload.email = cleanEmail;
+  }
 
   const updatedUser = await User.findByIdAndUpdate(
     cleanUserId,

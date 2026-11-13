@@ -1,16 +1,22 @@
 import mongoose from "mongoose";
 import { Project } from "./project.model.js";
 import { ProjectMember } from "../projectMembers/projectMember.model.js";
-import { Task } from "../tasks/task.model.js";
+import { Issue } from "../issues/issue.model.js";
 import { Comment } from "../comments/comment.model.js";
 import { Invitation } from "../invitations/invitation.model.js";
 import { Notification } from "../notifications/notification.model.js";
+import { User } from "../users/user.model.js";
 
 interface CreateProjectData {
     name: string;
     description?: string;
     startDate?: Date;
     dueDate?: Date;
+    priority?: string;
+    projectStatus?: string;
+    lead?: any;
+    teamId?: string;
+    teamName?: string;
 }
 
 export const createProject = async (
@@ -25,6 +31,11 @@ export const createProject = async (
         ownerId: new mongoose.Types.ObjectId(cleanOwnerId),
         startDate: data.startDate,
         dueDate: data.dueDate,
+        priority: data.priority || "none",
+        projectStatus: data.projectStatus || "planned",
+        lead: data.lead,
+        teamId: data.teamId,
+        teamName: data.teamName,
     });
 
     await ProjectMember.create({
@@ -138,6 +149,9 @@ interface UpdateProjectData {
     status?: "active" | "archived";
     startDate?: Date;
     dueDate?: Date;
+    priority?: string;
+    projectStatus?: string;
+    lead?: any;
 }
 
 export const updateProject = async (
@@ -194,32 +208,56 @@ export const deleteProject = async (
         throw new Error("Project not found");
     }
 
-    // Only project owner can delete the project
-    if (project.ownerId.toString() !== cleanUserId) {
-        throw new Error("Only the project owner can delete this project");
+    // Allow project owner, workspace admin, or project manager to delete the project
+    const isOwner = project.ownerId && project.ownerId.toString() === cleanUserId;
+    if (!isOwner) {
+        const user = await User.findById(cleanUserId);
+        const isAdmin = user && user.role === "admin";
+        const isManager = await ProjectMember.findOne({
+            projectId: new mongoose.Types.ObjectId(cleanProjectId),
+            userId: new mongoose.Types.ObjectId(cleanUserId),
+            role: { $in: ["owner", "manager"] as any },
+        });
+        if (!isAdmin && !isManager) {
+            throw new Error("Only the project owner or administrator can delete this project");
+        }
     }
+
+    // Robust query matching both ObjectId and string formats of projectId
+    const objProjId = new mongoose.Types.ObjectId(cleanProjectId);
+    const projQuery: any = {
+        $or: [{ projectId: objProjId }, { projectId: cleanProjectId }],
+    };
 
     // CASCADING DELETE: Clean up all child resources to prevent orphaned records in MongoDB
-    // 1. Find all task IDs of this project
-    const projectTasks = await Task.find({ projectId: cleanProjectId }).select("_id");
-    const taskIds = projectTasks.map((t) => t._id);
+    // 1. Find all issue IDs of this project
+    const projectIssues = await Issue.find(projQuery).select("_id");
+    const issueIds = projectIssues.map((t: any) => t._id);
 
-    // 2. Delete all comments on those tasks
-    if (taskIds.length > 0) {
-        await Comment.deleteMany({ taskId: { $in: taskIds } });
+    // 2. Delete all comments on those issues
+    if (issueIds.length > 0) {
+        await Comment.deleteMany({
+            $or: [{ issueId: { $in: issueIds } }, { taskId: { $in: issueIds } }],
+        });
     }
 
-    // 3. Delete all tasks of this project
-    await Task.deleteMany({ projectId: cleanProjectId });
+    // 3. Delete all issues of this project
+    await Issue.deleteMany(projQuery);
 
     // 4. Delete all project members
-    await ProjectMember.deleteMany({ projectId: cleanProjectId });
+    await ProjectMember.deleteMany({
+        $or: [{ projectId: objProjId }, { projectId: cleanProjectId }],
+    });
 
     // 5. Delete all invitations for this project
-    await Invitation.deleteMany({ projectId: cleanProjectId });
+    await Invitation.deleteMany({
+        $or: [{ projectId: objProjId }, { projectId: cleanProjectId }],
+    });
 
     // 6. Delete all notifications tied to this project
-    await Notification.deleteMany({ projectId: cleanProjectId });
+    await Notification.deleteMany({
+        $or: [{ projectId: objProjId }, { projectId: cleanProjectId }],
+    });
 
     // 7. Finally, delete the project
     await Project.findByIdAndDelete(cleanProjectId);

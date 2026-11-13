@@ -13,6 +13,14 @@ export const createProjectSchema = z.object({
         .trim()
         .optional(),
 
+    projectStatus: z.string().optional(),
+
+    priority: z.string().optional(),
+
+    lead: z.any().optional(),
+    teamId: z.string().optional(),
+    teamName: z.string().optional(),
+
     startDate: z.coerce.date().optional(),
 
     dueDate: z.coerce.date().optional(),
@@ -35,6 +43,12 @@ export const updateProjectSchema = z.object({
     status: z
         .enum(["active", "archived"])
         .optional(),
+
+    projectStatus: z.string().optional(),
+
+    priority: z.string().optional(),
+
+    lead: z.any().optional(),
 
     startDate: z
         .coerce

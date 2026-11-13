@@ -6,5 +6,6 @@ const router = Router();
 
 router.get("/", authenticate, get);
 router.patch("/", authenticate, update);
+router.put("/", authenticate, update);
 
 export default router;

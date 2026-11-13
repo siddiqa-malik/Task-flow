@@ -22,7 +22,7 @@ export const create = async (
 ): Promise<void> => {
   try {
     const validatedData = createCommentSchema.parse(req.body);
-    const taskId = req.params.taskId?.trim();
+    const targetId = (req.params.issueId || req.params.taskId)?.trim();
     const userId = req.user?.id;
 
     if (!userId) {
@@ -33,15 +33,15 @@ export const create = async (
       return;
     }
 
-    if (!taskId || !isValidObjectId(taskId)) {
+    if (!targetId) {
       res.status(400).json({
         success: false,
-        message: "Invalid or missing task ID",
+        message: "Invalid or missing issue/task ID",
       });
       return;
     }
 
-    const comment = await addComment(taskId, userId, validatedData.content);
+    const comment = await addComment(targetId, userId, validatedData.content);
 
     res.status(201).json({
       success: true,
@@ -65,7 +65,7 @@ export const getAllForTask = async (
   res: Response
 ): Promise<void> => {
   try {
-    const taskId = req.params.taskId?.trim();
+    const targetId = (req.params.issueId || req.params.taskId)?.trim();
     const userId = req.user?.id;
 
     if (!userId) {
@@ -76,15 +76,15 @@ export const getAllForTask = async (
       return;
     }
 
-    if (!taskId || !isValidObjectId(taskId)) {
+    if (!targetId) {
       res.status(400).json({
         success: false,
-        message: "Invalid or missing task ID",
+        message: "Invalid or missing issue/task ID",
       });
       return;
     }
 
-    const comments = await getTaskComments(taskId, userId);
+    const comments = await getTaskComments(targetId, userId);
 
     res.status(200).json({
       success: true,

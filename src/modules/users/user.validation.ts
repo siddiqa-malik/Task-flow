@@ -8,6 +8,27 @@ export const updateProfileSchema = z.object({
     .trim()
     .optional(),
 
+  email: z
+    .string()
+    .email("Invalid email address")
+    .toLowerCase()
+    .trim()
+    .optional(),
+
+  title: z
+    .string()
+    .max(100, "Title cannot exceed 100 characters")
+    .trim()
+    .optional()
+    .nullable(),
+
+  username: z
+    .string()
+    .max(50, "Username cannot exceed 50 characters")
+    .trim()
+    .optional()
+    .nullable(),
+
   avatar: z
     .string()
     .max(500, "Avatar URL is too long")

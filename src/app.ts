@@ -1,3 +1,5 @@
+import workspaceRoutes from "./modules/workspaces/workspace.routes.js";
+import teamRoutes from "./modules/teams/team.routes.js";
 import express from "express";
 import cors from "cors";
 import authRoutes from "./modules/auth/auth.routes.js";
@@ -6,12 +8,16 @@ import { AuthenticatedRequest } from "./types/auth.types.js";
 import { authorizeRoles } from "./middleware/role.middleware.js";
 import projectRoutes from "./modules/projects/project.routes.js";
 import projectMemberRoutes from "./modules/projectMembers/projectMember.routes.js";
-import { projectTaskRouter, taskRouter } from "./modules/tasks/task.routes.js";
-import { taskCommentRouter, commentRouter } from "./modules/comments/comment.routes.js";
+import { issueCommentRouter, taskCommentRouter, commentRouter } from "./modules/comments/comment.routes.js";
 import { projectInvitationRouter, invitationRouter } from "./modules/invitations/invitation.routes.js";
 import userRoutes from "./modules/users/user.routes.js";
 import notificationRoutes from "./modules/notifications/notification.routes.js";
 import settingsRoutes from "./modules/userSettings/userSettings.routes.js";
+import issueRoutes from "./modules/issues/issue.routes.js";
+import workflowStateRoutes from "./modules/workflowStates/workflowState.routes.js";
+import labelRoutes from "./modules/labels/label.routes.js";
+import cycleRoutes from "./modules/cycles/cycle.routes.js";
+import githubRoutes from "./modules/github/github.routes.js";
 import { notFoundHandler, errorHandler } from "./middleware/error.middleware.js";
 
 const app = express();
@@ -59,17 +65,27 @@ app.get(
 );
 
 // Module Routes
+app.use("/api/workspaces", workspaceRoutes);
+app.use("/api/teams", teamRoutes);
 app.use("/api/projects", projectRoutes);
 app.use("/api/projects", projectMemberRoutes);
-app.use("/api/projects", projectTaskRouter);
 app.use("/api/projects", projectInvitationRouter);
-app.use("/api/tasks", taskRouter);
+app.use("/api/issues", issueRoutes);
+app.use("/api/issues", issueCommentRouter);
+
+// Compatibility aliases for legacy frontend endpoints
+app.use("/api/tasks", issueRoutes);
 app.use("/api/tasks", taskCommentRouter);
+
 app.use("/api/comments", commentRouter);
 app.use("/api/invitations", invitationRouter);
 app.use("/api/users", userRoutes);
 app.use("/api/notifications", notificationRoutes);
 app.use("/api/settings", settingsRoutes);
+app.use("/api/workflow-states", workflowStateRoutes);
+app.use("/api/labels", labelRoutes);
+app.use("/api/cycles", cycleRoutes);
+app.use("/api/github", githubRoutes);
 
 // 404 Handler for undefined routes
 app.use(notFoundHandler);

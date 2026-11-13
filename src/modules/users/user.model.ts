@@ -6,6 +6,8 @@ export interface IUser extends Document {
   password: string;
   avatar?: string;
   role: "admin" | "user";
+  title?: string;
+  username?: string;
   resetPasswordToken?: string;
   resetPasswordExpires?: Date;
 }
@@ -40,6 +42,18 @@ const userSchema = new Schema<IUser>(
       type: String,
       enum: ["admin", "user"],
       default: "user",
+    },
+
+    title: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+
+    username: {
+      type: String,
+      trim: true,
+      default: "",
     },
 
     resetPasswordToken: {

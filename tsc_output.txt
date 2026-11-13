@@ -1,0 +1,75 @@
+yarn run v1.22.22
+$ "D:\my internship practice\backend\task-flow\node_modules\.bin\tsc" --noEmit
+src/modules/comments/comment.controller.ts(25,65): error TS2339: Property 'trim' does not exist on type 'string | string[]'.
+  Property 'trim' does not exist on type 'string[]'.
+src/modules/comments/comment.controller.ts(68,65): error TS2339: Property 'trim' does not exist on type 'string | string[]'.
+  Property 'trim' does not exist on type 'string[]'.
+src/modules/comments/comment.controller.ts(112,45): error TS2339: Property 'trim' does not exist on type 'string | string[]'.
+  Property 'trim' does not exist on type 'string[]'.
+src/modules/comments/comment.controller.ts(156,45): error TS2339: Property 'trim' does not exist on type 'string | string[]'.
+  Property 'trim' does not exist on type 'string[]'.
+src/modules/comments/comment.controller.ts(203,45): error TS2339: Property 'trim' does not exist on type 'string | string[]'.
+  Property 'trim' does not exist on type 'string[]'.
+src/modules/comments/comment.service.ts(57,7): error TS2353: Object literal may only specify known properties, and 'issueId' does not exist in type 'CreateNotificationInput'.
+src/modules/cycles/cycle.controller.ts(49,38): error TS2345: Argument of type 'string | string[]' is not assignable to parameter of type 'string'.
+  Type 'string[]' is not assignable to type 'string'.
+src/modules/cycles/cycle.controller.ts(114,37): error TS2345: Argument of type 'string | string[]' is not assignable to parameter of type 'string'.
+  Type 'string[]' is not assignable to type 'string'.
+src/modules/cycles/cycle.controller.ts(143,37): error TS2345: Argument of type 'string | string[]' is not assignable to parameter of type 'string'.
+  Type 'string[]' is not assignable to type 'string'.
+src/modules/invitations/invitation.controller.ts(23,45): error TS2339: Property 'trim' does not exist on type 'string | string[]'.
+  Property 'trim' does not exist on type 'string[]'.
+src/modules/invitations/invitation.controller.ts(66,45): error TS2339: Property 'trim' does not exist on type 'string | string[]'.
+  Property 'trim' does not exist on type 'string[]'.
+src/modules/invitations/invitation.controller.ts(149,37): error TS2339: Property 'trim' does not exist on type 'string | string[]'.
+  Property 'trim' does not exist on type 'string[]'.
+src/modules/invitations/invitation.controller.ts(194,37): error TS2339: Property 'trim' does not exist on type 'string | string[]'.
+  Property 'trim' does not exist on type 'string[]'.
+src/modules/invitations/invitation.controller.ts(239,51): error TS2339: Property 'trim' does not exist on type 'string | string[]'.
+  Property 'trim' does not exist on type 'string[]'.
+src/modules/issues/issue.controller.ts(95,50): error TS2345: Argument of type 'string | string[]' is not assignable to parameter of type 'string'.
+  Type 'string[]' is not assignable to type 'string'.
+src/modules/issues/issue.controller.ts(123,42): error TS2345: Argument of type 'string | string[]' is not assignable to parameter of type 'string'.
+  Type 'string[]' is not assignable to type 'string'.
+src/modules/issues/issue.controller.ts(143,39): error TS2345: Argument of type 'string | string[]' is not assignable to parameter of type 'string'.
+  Type 'string[]' is not assignable to type 'string'.
+src/modules/issues/issue.controller.ts(172,39): error TS2345: Argument of type 'string | string[]' is not assignable to parameter of type 'string'.
+  Type 'string[]' is not assignable to type 'string'.
+src/modules/labels/label.controller.ts(84,37): error TS2345: Argument of type 'string | string[]' is not assignable to parameter of type 'string'.
+  Type 'string[]' is not assignable to type 'string'.
+src/modules/labels/label.controller.ts(113,37): error TS2345: Argument of type 'string | string[]' is not assignable to parameter of type 'string'.
+  Type 'string[]' is not assignable to type 'string'.
+src/modules/notifications/notification.controller.ts(92,55): error TS2339: Property 'trim' does not exist on type 'string | string[]'.
+  Property 'trim' does not exist on type 'string[]'.
+src/modules/notifications/notification.controller.ts(172,55): error TS2339: Property 'trim' does not exist on type 'string | string[]'.
+  Property 'trim' does not exist on type 'string[]'.
+src/modules/projectMembers/projectMember.controller.ts(24,45): error TS2339: Property 'trim' does not exist on type 'string | string[]'.
+  Property 'trim' does not exist on type 'string[]'.
+src/modules/projectMembers/projectMember.controller.ts(68,45): error TS2339: Property 'trim' does not exist on type 'string | string[]'.
+  Property 'trim' does not exist on type 'string[]'.
+src/modules/projectMembers/projectMember.controller.ts(110,45): error TS2339: Property 'trim' does not exist on type 'string | string[]'.
+  Property 'trim' does not exist on type 'string[]'.
+src/modules/projectMembers/projectMember.controller.ts(111,43): error TS2339: Property 'trim' does not exist on type 'string | string[]'.
+  Property 'trim' does not exist on type 'string[]'.
+src/modules/projectMembers/projectMember.controller.ts(162,45): error TS2339: Property 'trim' does not exist on type 'string | string[]'.
+  Property 'trim' does not exist on type 'string[]'.
+src/modules/projectMembers/projectMember.controller.ts(163,43): error TS2339: Property 'trim' does not exist on type 'string | string[]'.
+  Property 'trim' does not exist on type 'string[]'.
+src/modules/projectMembers/projectMember.controller.ts(215,45): error TS2339: Property 'trim' does not exist on type 'string | string[]'.
+  Property 'trim' does not exist on type 'string[]'.
+src/modules/projectMembers/projectMember.controller.ts(216,43): error TS2339: Property 'trim' does not exist on type 'string | string[]'.
+  Property 'trim' does not exist on type 'string[]'.
+src/modules/projectMembers/projectMember.service.ts(322,9): error TS1117: An object literal cannot have multiple properties with the same name.
+src/modules/workflowStates/workflowState.controller.ts(88,45): error TS2345: Argument of type 'string | string[]' is not assignable to parameter of type 'string'.
+  Type 'string[]' is not assignable to type 'string'.
+src/modules/workflowStates/workflowState.controller.ts(117,45): error TS2345: Argument of type 'string | string[]' is not assignable to parameter of type 'string'.
+  Type 'string[]' is not assignable to type 'string'.
+src/modules/workflowStates/workflowState.service.ts(47,5): error TS2322: Type 'IWorkflowState[]' is not assignable to type '(Document<unknown, {}, IWorkflowState, {}, DefaultSchemaOptions> & IWorkflowState & Required<{ _id: ObjectId; }> & { ...; } & { ...; })[]'.
+  Type 'IWorkflowState' is not assignable to type 'Document<unknown, {}, IWorkflowState, {}, DefaultSchemaOptions> & IWorkflowState & Required<{ _id: ObjectId; }> & { ...; } & { ...; }'.
+    Property '__v' is missing in type 'IWorkflowState' but required in type '{ __v: number; }'.
+src/modules/workspaces/workspace.controller.ts(141,43): error TS2339: Property 'name' does not exist on type '{ id: string; role: "admin" | "user"; }'.
+src/modules/workspaces/workspace.controller.ts(165,53): error TS2345: Argument of type 'string | string[]' is not assignable to parameter of type 'string'.
+  Type 'string[]' is not assignable to type 'string'.
+src/modules/workspaces/workspace.controller.ts(188,52): error TS2345: Argument of type 'string | string[]' is not assignable to parameter of type 'string'.
+  Type 'string[]' is not assignable to type 'string'.
+info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
