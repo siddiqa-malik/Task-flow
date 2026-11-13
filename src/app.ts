@@ -19,16 +19,40 @@ import labelRoutes from "./modules/labels/label.routes.js";
 import cycleRoutes from "./modules/cycles/cycle.routes.js";
 import githubRoutes from "./modules/github/github.routes.js";
 import { notFoundHandler, errorHandler } from "./middleware/error.middleware.js";
+import { connectDatabase } from "./config/database.js";
 
 const app = express();
 
-app.use(cors());
+/*
+ * Enable CORS for all origins (including Vercel production & preview URLs)
+ * and allow credentials/authorization headers for preflight OPTIONS requests.
+ */
+app.use(
+  cors({
+    origin: true,
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 app.use(express.json());
 
 // Sanitize URL (removes accidental newline %0A or trailing spaces from Postman)
 app.use((req, _res, next) => {
   req.url = req.url.replace(/%0A|[\r\n]+/gi, "").trim();
   next();
+});
+
+/*
+ * Ensure MongoDB is connected on every serverless invocation before hitting routes.
+ */
+app.use(async (_req, _res, next) => {
+  try {
+    await connectDatabase();
+    next();
+  } catch (err) {
+    next(err);
+  }
 });
 
 app.get("/", (_req, res) => {

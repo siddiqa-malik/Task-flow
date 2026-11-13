@@ -20,3 +20,5 @@ const startServer = async (): Promise<void> => {
 };
 
 startServer();
+
+export default app;
