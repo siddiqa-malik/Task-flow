@@ -3,10 +3,16 @@ import { Notification } from "./notification.model.js";
 
 interface CreateNotificationInput {
   userId: string | mongoose.Types.ObjectId;
-  type: "task-assigned" | "comment-added" | "project-invitation" | "task-due";
+  type:
+    | "task-assigned"
+    | "issue-assigned"
+    | "comment-added"
+    | "project-invitation"
+    | "task-due";
   message: string;
   projectId?: string | mongoose.Types.ObjectId;
   taskId?: string | mongoose.Types.ObjectId;
+  issueId?: string | mongoose.Types.ObjectId;
 }
 
 // =====================================================
@@ -23,6 +29,9 @@ export const createNotification = async (data: CreateNotificationInput) => {
         : undefined,
       taskId: data.taskId
         ? new mongoose.Types.ObjectId(data.taskId.toString())
+        : undefined,
+      issueId: data.issueId
+        ? new mongoose.Types.ObjectId(data.issueId.toString())
         : undefined,
       isRead: false,
     });

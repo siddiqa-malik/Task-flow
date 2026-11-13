@@ -84,7 +84,7 @@ export const update = async (
   res: Response
 ): Promise<void> => {
   try {
-    const { id } = req.params;
+    const id = String(req.params.id || "");
     const state = await updateWorkflowState(id, req.body);
 
     if (!state) {
@@ -113,7 +113,7 @@ export const remove = async (
   res: Response
 ): Promise<void> => {
   try {
-    const { id } = req.params;
+    const id = String(req.params.id || "");
     const state = await deleteWorkflowState(id);
 
     if (!state) {

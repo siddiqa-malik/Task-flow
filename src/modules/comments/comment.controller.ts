@@ -22,7 +22,7 @@ export const create = async (
 ): Promise<void> => {
   try {
     const validatedData = createCommentSchema.parse(req.body);
-    const targetId = (req.params.issueId || req.params.taskId)?.trim();
+    const targetId = String(req.params.issueId || req.params.taskId || "").trim();
     const userId = req.user?.id;
 
     if (!userId) {
@@ -65,7 +65,7 @@ export const getAllForTask = async (
   res: Response
 ): Promise<void> => {
   try {
-    const targetId = (req.params.issueId || req.params.taskId)?.trim();
+    const targetId = String(req.params.issueId || req.params.taskId || "").trim();
     const userId = req.user?.id;
 
     if (!userId) {
@@ -109,7 +109,7 @@ export const getOne = async (
   res: Response
 ): Promise<void> => {
   try {
-    const commentId = req.params.commentId?.trim();
+    const commentId = String(req.params.commentId || "").trim();
     const userId = req.user?.id;
 
     if (!userId) {
@@ -153,7 +153,7 @@ export const update = async (
 ): Promise<void> => {
   try {
     const validatedData = updateCommentSchema.parse(req.body);
-    const commentId = req.params.commentId?.trim();
+    const commentId = String(req.params.commentId || "").trim();
     const userId = req.user?.id;
 
     if (!userId) {
@@ -200,7 +200,7 @@ export const remove = async (
   res: Response
 ): Promise<void> => {
   try {
-    const commentId = req.params.commentId?.trim();
+    const commentId = String(req.params.commentId || "").trim();
     const userId = req.user?.id;
 
     if (!userId) {

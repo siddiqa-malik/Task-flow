@@ -21,7 +21,7 @@ export const addMember = async (
   try {
     const validatedData = addProjectMemberSchema.parse(req.body);
 
-    const projectId = req.params.projectId?.trim();
+    const projectId = String(req.params.projectId || "").trim();
     const ownerId = req.user?.id;
 
     if (!ownerId) {
@@ -65,7 +65,7 @@ export const getMembers = async (
   res: Response
 ): Promise<void> => {
   try {
-    const projectId = req.params.projectId?.trim();
+    const projectId = String(req.params.projectId || "").trim();
     const userId = req.user?.id;
 
     if (!userId) {
@@ -107,8 +107,8 @@ export const getMember = async (
   res: Response
 ): Promise<void> => {
   try {
-    const projectId = req.params.projectId?.trim();
-    const memberId = req.params.memberId?.trim();
+    const projectId = String(req.params.projectId || "").trim();
+    const memberId = String(req.params.memberId || "").trim();
     const userId = req.user?.id;
 
     if (!userId) {
@@ -159,8 +159,8 @@ export const removeMember = async (
   res: Response
 ): Promise<void> => {
   try {
-    const projectId = req.params.projectId?.trim();
-    const memberId = req.params.memberId?.trim();
+    const projectId = String(req.params.projectId || "").trim();
+    const memberId = String(req.params.memberId || "").trim();
     const ownerId = req.user?.id;
 
     if (!ownerId) {
@@ -212,8 +212,8 @@ export const updateRole = async (
   try {
     const validatedData = updateProjectMemberRoleSchema.parse(req.body);
 
-    const projectId = req.params.projectId?.trim();
-    const memberId = req.params.memberId?.trim();
+    const projectId = String(req.params.projectId || "").trim();
+    const memberId = String(req.params.memberId || "").trim();
     const ownerId = req.user?.id;
 
     if (!ownerId) {

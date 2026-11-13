@@ -45,7 +45,7 @@ export const getOne = async (
   res: Response
 ): Promise<void> => {
   try {
-    const { id } = req.params;
+    const id = String(req.params.id || "");
     const cycle = await getCycleById(id);
 
     if (!cycle) {
@@ -110,7 +110,7 @@ export const update = async (
   res: Response
 ): Promise<void> => {
   try {
-    const { id } = req.params;
+    const id = String(req.params.id || "");
     const cycle = await updateCycle(id, req.body);
 
     if (!cycle) {
@@ -139,7 +139,7 @@ export const remove = async (
   res: Response
 ): Promise<void> => {
   try {
-    const { id } = req.params;
+    const id = String(req.params.id || "");
     const cycle = await deleteCycle(id);
 
     if (!cycle) {

@@ -80,7 +80,7 @@ export const update = async (
   res: Response
 ): Promise<void> => {
   try {
-    const { id } = req.params;
+    const id = String(req.params.id || "");
     const label = await updateLabel(id, req.body);
 
     if (!label) {
@@ -109,7 +109,7 @@ export const remove = async (
   res: Response
 ): Promise<void> => {
   try {
-    const { id } = req.params;
+    const id = String(req.params.id || "");
     const label = await deleteLabel(id);
 
     if (!label) {

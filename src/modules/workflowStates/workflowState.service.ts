@@ -39,9 +39,9 @@ export const ensureTeamWorkflowStates = async (
 export const getWorkflowStatesByTeam = async (
   teamId: string,
   workspaceId?: string
-) => {
+): Promise<IWorkflowState[]> => {
   const tId = new mongoose.Types.ObjectId(teamId);
-  let states = await WorkflowState.find({ teamId: tId }).sort({ position: 1 });
+  let states: IWorkflowState[] = await WorkflowState.find({ teamId: tId }).sort({ position: 1 });
 
   if (states.length === 0 && workspaceId) {
     states = await ensureTeamWorkflowStates(teamId, workspaceId);

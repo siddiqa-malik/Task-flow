@@ -91,7 +91,7 @@ export const getOne = async (
   res: Response
 ): Promise<void> => {
   try {
-    const { id } = req.params;
+    const id = String(req.params.id || "");
     const issue = await getIssueByIdOrIdentifier(id);
 
     if (!issue) {
@@ -119,7 +119,7 @@ export const getSubIssuesHandler = async (
   res: Response
 ): Promise<void> => {
   try {
-    const { id } = req.params;
+    const id = String(req.params.id || "");
     const subIssues = await getSubIssues(id);
 
     res.json({
@@ -139,7 +139,7 @@ export const update = async (
   res: Response
 ): Promise<void> => {
   try {
-    const { id } = req.params;
+    const id = String(req.params.id || "");
     const updated = await updateIssue(id, req.body);
 
     if (!updated) {
@@ -168,7 +168,7 @@ export const remove = async (
   res: Response
 ): Promise<void> => {
   try {
-    const { id } = req.params;
+    const id = String(req.params.id || "");
     const deleted = await deleteIssue(id);
 
     if (!deleted) {

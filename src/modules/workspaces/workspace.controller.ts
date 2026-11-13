@@ -210,7 +210,7 @@ export const leave = async (
 ): Promise<void> => {
   try {
     const userId = req.user?.id;
-    const workspaceId = req.params.id;
+    const workspaceId = String(req.params.id || "");
 
     if (!userId) {
       res.status(401).json({

@@ -89,7 +89,7 @@ export const markAsRead = async (
   res: Response
 ): Promise<void> => {
   try {
-    const notificationId = req.params.notificationId?.trim();
+    const notificationId = String(req.params.notificationId || "").trim();
     const userId = req.user?.id;
 
     if (!userId) {
@@ -169,7 +169,7 @@ export const remove = async (
   res: Response
 ): Promise<void> => {
   try {
-    const notificationId = req.params.notificationId?.trim();
+    const notificationId = String(req.params.notificationId || "").trim();
     const userId = req.user?.id;
 
     if (!userId) {

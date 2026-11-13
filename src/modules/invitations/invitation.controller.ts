@@ -20,7 +20,7 @@ export const send = async (
 ): Promise<void> => {
   try {
     const validatedData = createInvitationSchema.parse(req.body);
-    const projectId = req.params.projectId?.trim();
+    const projectId = String(req.params.projectId || "").trim();
     const userId = req.user?.id;
 
     if (!userId) {
@@ -63,7 +63,7 @@ export const getAllForProject = async (
   res: Response
 ): Promise<void> => {
   try {
-    const projectId = req.params.projectId?.trim();
+    const projectId = String(req.params.projectId || "").trim();
     const userId = req.user?.id;
 
     if (!userId) {
@@ -146,7 +146,7 @@ export const accept = async (
   res: Response
 ): Promise<void> => {
   try {
-    const token = req.params.token?.trim();
+    const token = String(req.params.token || "").trim();
     const userId = req.user?.id;
 
     if (!userId) {
@@ -191,7 +191,7 @@ export const reject = async (
   res: Response
 ): Promise<void> => {
   try {
-    const token = req.params.token?.trim();
+    const token = String(req.params.token || "").trim();
     const userId = req.user?.id;
 
     if (!userId) {
@@ -236,7 +236,7 @@ export const cancel = async (
   res: Response
 ): Promise<void> => {
   try {
-    const invitationId = req.params.invitationId?.trim();
+    const invitationId = String(req.params.invitationId || "").trim();
     const userId = req.user?.id;
 
     if (!userId) {

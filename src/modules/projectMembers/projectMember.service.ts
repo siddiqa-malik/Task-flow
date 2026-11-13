@@ -314,16 +314,22 @@ export const removeProjectMember = async (
 
     // 3. Find and delete member (only removes the relationship in ProjectMember, User account remains intact)
     const member = await ProjectMember.findOneAndDelete({
-        $or: [
-            { projectId: cleanProjectId },
-            ...(projectObjId ? [{ projectId: projectObjId }] : []),
-            { projectId: project._id },
-        ],
-        $or: [
-            { _id: cleanMemberId },
-            ...(memberObjId ? [{ _id: memberObjId }] : []),
-            { userId: cleanMemberId },
-            ...(memberObjId ? [{ userId: memberObjId }] : []),
+        $and: [
+            {
+                $or: [
+                    { projectId: cleanProjectId },
+                    ...(projectObjId ? [{ projectId: projectObjId }] : []),
+                    { projectId: project._id },
+                ],
+            },
+            {
+                $or: [
+                    { _id: cleanMemberId },
+                    ...(memberObjId ? [{ _id: memberObjId }] : []),
+                    { userId: cleanMemberId },
+                    ...(memberObjId ? [{ userId: memberObjId }] : []),
+                ],
+            },
         ],
     }).populate("userId", "name email avatar role");
 
